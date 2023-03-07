@@ -25,6 +25,11 @@ const serverlessConfiguration: AWS = {
   functions: { getProductsList, getProductsById },
   package: { individually: true },
   custom: {
+    autoswagger: {
+      basePath: '/dev',
+      host: 'yecrj6u86i.execute-api.us-west-1.amazonaws.com',
+      schemes: ['https']
+    },
     esbuild: {
       bundle: true,
       minify: false,
