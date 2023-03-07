@@ -5,6 +5,6 @@ export const getProductsList = async () => {
   const products = await getProductsMock();
   
   return formatJSONResponse({
-    payload: products,
+    result: products,
   });
 };

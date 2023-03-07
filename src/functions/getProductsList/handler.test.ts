@@ -9,7 +9,7 @@ describe("Products Service", () => {
 
             const response = await getProductsList();
 
-            expect(JSON.parse(response.body)).toEqual({ payload: products });
+            expect(JSON.parse(response.body)).toEqual(products);
         })
     })
 });
