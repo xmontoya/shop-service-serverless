@@ -20,7 +20,7 @@ describe("Products Service", () => {
             })
 
             expect(response.statusCode).toEqual(404);
-            expect(response.body).toEqual('Product not found.')
+            expect(JSON.parse(response.body).message).toEqual('Product not found.')
         });
     });
 });

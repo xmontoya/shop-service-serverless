@@ -8,6 +8,11 @@ export type Product = {
 export type Products = Product[];
 
 export type ErrorNotFound = {
-    message: string
-    statusCode: 404
+    message: string 
+    statusCode: number
+};
+
+export type ErrorAPI = {
+    message: any
+    statusCode: number
 };
