@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
-
 import { handlerPath } from '@libs/handler-resolver';
+
+dotenv.config();
 
 export default {
   handler: `${handlerPath(__dirname)}/handler.getProductsById`,

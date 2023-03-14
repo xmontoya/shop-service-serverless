@@ -1,10 +1,13 @@
+import * as dotenv from 'dotenv';
 import { handlerPath } from '@libs/handler-resolver';
+
+dotenv.config();
 
 export default {
   handler: `${handlerPath(__dirname)}/handler.getProductsList`,
   environment: {
-    PRODUCTS_TABLE_NAME: 'JSCC_SHOP_PRODUCTS',
-    STOCKS_TABLE_NAME: 'JSCC_SHOP_STOCKS',
+    PRODUCTS_TABLE_NAME: process.env.PRODUCTS_TABLE_NAME,
+    STOCKS_TABLE_NAME: process.env.STOCKS_TABLE_NAME,
   },
   events: [
     {
