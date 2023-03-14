@@ -13,38 +13,54 @@ const getProduct = async (productId) => {
   .promise();
 
   const product = resultProduct.Items?.[0];
+  
+  if (product?.id) {
+    const resultStock = await dynamDB
+    .query({
+        TableName: process.env.STOCKS_TABLE_NAME,
+        KeyConditionExpression: "product_id = :id",
+        ExpressionAttributeValues: { ":id": productId },
+    })
+    .promise();
 
-  const resultStock = await dynamDB
-  .query({
-      TableName: process.env.STOCKS_TABLE_NAME,
-      KeyConditionExpression: "product_id = :id",
-      ExpressionAttributeValues: { ":id": productId },
-  })
-  .promise();
+    const stock = resultStock.Items?.[0]?.count || 0;
 
-  const stock = resultStock.Items?.[0]?.count || 0;
+    return {
+      ...product,
+      stock
+    };
+  }
 
-  return {
-    ...product,
-    stock
-  };
+  return null;
 }
 
 export const getProductsById = async (event) => {
-  const productId = event?.pathParameters?.id;
-  const product = await getProduct(productId);
+  try {
+    const productId = event?.pathParameters?.id;
+    console.log(`Product Id: ${productId}`);
+    const product = await getProduct(productId);
 
-  if (!product) {
+    if (!product) {
+      return formatJSONResponse({
+        result: null,
+        error: {
+          message: { message: 'Product not found.' },
+          statusCode: 404,
+        }
+      });
+    }
+
+    return formatJSONResponse({
+      result: product,
+    });
+  } catch (error) {
+    console.log(error);
     return formatJSONResponse({
       result: null,
       error: {
-        message: { message: 'Product not found.' },
-        statusCode: 404,
+        message: { message: 'Error while trying to create a new Product.'},
+        statusCode: 500,
       }
     });
   }
-
-  return formatJSONResponse({
-    result: product,
-  });
 }

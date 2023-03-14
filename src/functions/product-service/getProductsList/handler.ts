@@ -20,7 +20,7 @@ const getProducts = async () => {
   const productStocks = stocksResults.Items;
 
   const productsWithStock = products.map(item => {
-    const count = productStocks.find(({ product_id }) => product_id === item.id).count || 0;
+    const count = productStocks.find(({ product_id }) => product_id === item.id)?.count || 0;
     return {
       ...item,
       count

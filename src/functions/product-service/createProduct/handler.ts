@@ -1,5 +1,9 @@
+import { DynamoDB }  from "aws-sdk";
+import { v4 } from 'uuid';
 import { formatJSONResponse } from "@libs/api-gateway";
 import { isNumber, isString, isEmpty } from "@libs/validation";
+
+const dynamoDB = new DynamoDB.DocumentClient();
 
 const validateBody = (body) => {
     const bodyErrors = [];
@@ -24,30 +28,71 @@ const validateBody = (body) => {
     return bodyErrors;
 };
 
+const putProduct = async(body) => {
+  const id = v4();
+  const { title, description, price, count } = body;
+
+  const result = await dynamoDB
+    .transactWrite({
+      TransactItems: [
+        {
+          Put: {
+            TableName: process.env.PRODUCTS_TABLE_NAME,
+            Item: {
+              id,
+              title,
+              description,
+              price
+            },
+            ConditionExpression: "attribute_not_exists(id)",
+          },
+        },
+        {
+          Put: {
+              TableName: process.env.STOCKS_TABLE_NAME,
+              Item: {
+                product_id: id,
+                count,
+              },
+              ConditionExpression: "attribute_not_exists(product_id)",
+          },
+        },
+      ],
+    })
+    .promise()
+
+  return result;
+};
 
 export const createProduct = async (event) => {
-  const productBody = JSON.parse(event?.body);
-  
-  const bodyErrors = validateBody(productBody);
+  try {
+    const productBody = JSON.parse(event?.body);
+    console.log('Request body:', productBody);
+    
+    const bodyErrors = validateBody(productBody);
+    if (bodyErrors.length) {
+      return formatJSONResponse({
+        result: null,
+        error: {
+          message: bodyErrors,
+          statusCode: 400,
+        }
+      });
+    }
 
-  if (bodyErrors.length) {
+    await putProduct(productBody);
+
+    return formatJSONResponse({
+      result: { message: 'Product created.' }
+    });
+  } catch (error) {
+    console.log(error);
     return formatJSONResponse({
       result: null,
       error: {
-        message: bodyErrors,
-        statusCode: 400,
+        message: { message: 'Error while trying to create a new Product.'},
+        statusCode: 500,
       }
     });
   }
-
-  return formatJSONResponse({
-    result: {
-        id: 2,
-        title: "Mens Casual Premium Slim Fit T-Shirts ",
-        price: 22.3,
-        description: "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.",
-        category: "men's clothing",
-        image: "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-      },
-  });
 }
