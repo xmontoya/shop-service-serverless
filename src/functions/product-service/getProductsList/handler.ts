@@ -1,9 +1,9 @@
 import { DynamoDB }  from "aws-sdk";
 import { formatJSONResponse } from '@libs/api-gateway';
 
-const dynamoDB = new DynamoDB.DocumentClient();
-
 const getProducts = async () => {
+  const dynamoDB = new DynamoDB.DocumentClient();
+
   const productsResults = await dynamoDB
     .scan({
       TableName: process.env.PRODUCTS_TABLE_NAME,

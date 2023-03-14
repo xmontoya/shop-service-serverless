@@ -1,9 +1,9 @@
 import { DynamoDB }  from "aws-sdk";
 import { formatJSONResponse } from "@libs/api-gateway";
 
-const dynamDB = new DynamoDB.DocumentClient();
-
 const getProduct = async (productId) => {
+  const dynamDB = new DynamoDB.DocumentClient();
+
   const resultProduct = await dynamDB
   .query({
       TableName: process.env.PRODUCTS_TABLE_NAME,
@@ -23,11 +23,11 @@ const getProduct = async (productId) => {
     })
     .promise();
 
-    const stock = resultStock.Items?.[0]?.count || 0;
+    const count = resultStock.Items?.[0]?.count || 0;
 
     return {
       ...product,
-      stock
+      count
     };
   }
 

@@ -3,8 +3,6 @@ import { v4 } from 'uuid';
 import { formatJSONResponse } from "@libs/api-gateway";
 import { isNumber, isString, isEmpty } from "@libs/validation";
 
-const dynamoDB = new DynamoDB.DocumentClient();
-
 const validateBody = (body) => {
     const bodyErrors = [];
     const { title, description, price, count } = body;
@@ -29,6 +27,7 @@ const validateBody = (body) => {
 };
 
 const putProduct = async(body) => {
+  const dynamoDB = new DynamoDB.DocumentClient();
   const id = v4();
   const { title, description, price, count } = body;
 
