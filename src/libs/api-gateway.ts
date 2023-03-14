@@ -1,7 +1,7 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Handler } from "aws-lambda"
 import type { FromSchema } from "json-schema-to-ts";
 
-import { ErrorNotFound } from "../types/api-types";
+import { ErrorNotFound, ErrorAPI } from "../types/api-types";
 
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, 'body'> & { body: FromSchema<S> }
 export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<ValidatedAPIGatewayProxyEvent<S>, APIGatewayProxyResult>
@@ -14,7 +14,7 @@ const CORS_HEADERS = {
 
 export const formatJSONResponse = <T>(response: {
   result?: Record<string, unknown> | Record<string, unknown>[] | T | null,
-  error?: ErrorNotFound
+  error?: ErrorNotFound | ErrorAPI
 }) => {
   const { result, error } = response;
 
@@ -26,7 +26,7 @@ export const formatJSONResponse = <T>(response: {
       headers: {
         ...CORS_HEADERS,
       },
-      body: message
+      body: JSON.stringify(message)
     }
   }
 
