@@ -1,16 +1,14 @@
 import { DynamoDB }  from "aws-sdk";
-import { formatJSONResponse } from '@libs/api-gateway';
+import { formatJSONResponse } from '@productLibs/api-gateway';
 
-const getProducts = async () => {
-  const dynamoDB = new DynamoDB.DocumentClient();
-
-  const productsResults = await dynamoDB
+const getProducts = async (dbInstance) => {
+  const productsResults = await dbInstance
     .scan({
       TableName: process.env.PRODUCTS_TABLE_NAME,
     })
     .promise();
 
-  const stocksResults = await dynamoDB
+  const stocksResults = await dbInstance
     .scan({
       TableName: process.env.STOCKS_TABLE_NAME,
     })
@@ -31,7 +29,9 @@ const getProducts = async () => {
 };
 
 export const getProductsList = async () => {
-  const products = await getProducts();
+  const dynamoDB = new DynamoDB.DocumentClient();
+
+  const products = await getProducts(dynamoDB);
 
   return formatJSONResponse({
     result: products,

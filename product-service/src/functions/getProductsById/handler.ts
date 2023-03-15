@@ -1,5 +1,5 @@
 import { DynamoDB }  from "aws-sdk";
-import { formatJSONResponse } from "@libs/api-gateway";
+import { formatJSONResponse } from "@productLibs/api-gateway";
 
 const getProduct = async (productId) => {
   const dynamDB = new DynamoDB.DocumentClient();

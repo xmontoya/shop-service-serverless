@@ -1,8 +1,8 @@
 import * as AWSMock from "aws-sdk-mock";
-import * as AWS from "aws-sdk";
+import * as path from 'path';
 
-import { getProductsMock, getStocksMock } from "@mocks/products";
-import { getProductsById } from "./handler";
+import { getProductsMock, getStocksMock } from "../mocks/products";
+import { getProductsById } from "@productFunctions/getProductsById/handler";
 
 describe("Products Service", () => {
   describe("getProductsById", () => {
@@ -17,7 +17,7 @@ describe("Products Service", () => {
       productsMock = (await getProductsMock())[0];
       stocksMock = (await getStocksMock())[0];
 
-      AWSMock.setSDKInstance(AWS);
+      AWSMock.setSDK(path.resolve('product-service/node_modules/aws-sdk'));
       AWSMock.mock("DynamoDB.DocumentClient", "query", (params, callback) => {
         const mockId = params?.ExpressionAttributeValues?.[':id'];
         if( mockId === 404 ) {

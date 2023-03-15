@@ -1,7 +1,7 @@
 import { DynamoDB }  from "aws-sdk";
 import { v4 } from 'uuid';
-import { formatJSONResponse } from "@libs/api-gateway";
-import { isNumber, isString, isEmpty } from "@libs/validation";
+import { formatJSONResponse } from "@productLibs/api-gateway";
+import { isNumber, isString, isEmpty } from "@productLibs/validation";
 
 const validateBody = (body) => {
     const bodyErrors = [];

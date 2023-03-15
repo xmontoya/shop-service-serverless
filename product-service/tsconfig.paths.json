@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@productFunctions/*": ["src/functions/*"],
+      "@productLibs/*": ["src/libs/*"]
+    }
+  }
+}
