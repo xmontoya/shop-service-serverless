@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
-import { handlerPath } from '@libs/handler-resolver';
+import { handlerPath } from '@productLibs/handler-resolver';
 
 dotenv.config();
 
 export default {
-  handler: `${handlerPath(__dirname)}/handler.getProductsList`,
+  handler: `${handlerPath(__dirname)}/handler.createProduct`,
   environment: {
     PRODUCTS_TABLE_NAME: process.env.PRODUCTS_TABLE_NAME,
     STOCKS_TABLE_NAME: process.env.STOCKS_TABLE_NAME,
@@ -12,13 +12,13 @@ export default {
   events: [
     {
       http: {
-        method: 'get',
+        method: 'post',
         path: 'products',
         cors: true,
         responses: {
-          200: {
-              description: "OK",
-              bodyType: "Products",
+          201: {
+              description: "Created",
+              bodyType: "Product",
           },
         },
       },

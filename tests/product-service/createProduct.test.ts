@@ -1,7 +1,7 @@
 import * as AWSMock from "aws-sdk-mock";
-import * as AWS from "aws-sdk";
+import * as path from 'path';
 
-import { createProduct } from "./handler";
+import { createProduct } from "@productFunctions/createProduct/handler";
 
 describe("Products Service", () => {
   describe("createProduct", () => {
@@ -11,7 +11,7 @@ describe("Products Service", () => {
       process.env.STOCKS_TABLE_NAME = "dummyStocksTableName";
       process.env.AWS_REGION = "us-west-2";
 
-      AWSMock.setSDKInstance(AWS);
+      AWSMock.setSDK(path.resolve('product-service/node_modules/aws-sdk'));
       AWSMock.mock("DynamoDB.DocumentClient", "transactWrite", (params, callback) => {
         console.log(`called with params: ${params.TransactItems}`);
           callback(null, { });

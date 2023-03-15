@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@importFunctions/*": ["src/functions/*"],
+      "@importLibs/*": ["src/libs/*"]
+    }
+  }
+}

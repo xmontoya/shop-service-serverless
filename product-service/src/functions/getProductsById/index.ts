@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { handlerPath } from '@libs/handler-resolver';
+import { handlerPath } from '@productLibs/handler-resolver';
 
 dotenv.config();
 

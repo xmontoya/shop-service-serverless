@@ -16,7 +16,7 @@ module.exports = {
   ],
   modulePaths: ['./src'],
   moduleNameMapper: {
-    '^@libs/(.*)$': '<rootDir>/src/libs/$1',
-    '^@mocks/(.*)$': '<rootDir>/src/mocks/$1',
+    '^@productFunctions/(.*)$': '<rootDir>/product-service/src/functions/$1',
+    '^@productLibs/(.*)$': '<rootDir>/product-service/src/libs/$1',
   },
 };
