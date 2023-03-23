@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 import importProductsFile from '@importFunctions/importProductsFile';
+import importFileParser from '@importFunctions/importFileParser';
 
 const serverlessConfiguration: AWS = {
   service: 'shop-import-service',
@@ -19,9 +20,21 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
+    iamRoleStatements: [
+      {
+          Effect: "Allow",
+          Action: "s3:ListBucket",
+          Resource: ["arn:aws:s3:::js-cc"],
+      },
+      {
+          Effect: "Allow",
+          Action: ["s3:*"],
+          Resource: ["arn:aws:s3:::js-cc/*"],
+      },
+  ],
   },
   // import the function via paths
-  functions: { importProductsFile },
+  functions: { importProductsFile, importFileParser },
   package: { individually: true },
   custom: {
     esbuild: {

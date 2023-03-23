@@ -18,5 +18,7 @@ module.exports = {
   moduleNameMapper: {
     '^@productFunctions/(.*)$': '<rootDir>/product-service/src/functions/$1',
     '^@productLibs/(.*)$': '<rootDir>/product-service/src/libs/$1',
+    '^@importFunctions/(.*)$': '<rootDir>/import-service/src/functions/$1',
+    '^@importLibs/(.*)$': '<rootDir>/import-service/src/libs/$1',
   },
 };

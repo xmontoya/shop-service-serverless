@@ -3,7 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@productFunctions/*": ["product-service/src/functions/*"],
-      "@productLibs/*": ["product-service/src/libs/*"]
+      "@productLibs/*": ["product-service/src/libs/*"],
+      "@importFunctions/*": ["import-service/src/functions/*"],
+      "@importLibs/*": ["import-service/src/libs/*"]
     }
   }
 }
