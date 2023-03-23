@@ -18,20 +18,22 @@ export const importFileParser = async (event) => {
                 process.env.BUCKET_PARSED
             );
 
+            console.log(`Origin: ${origin}`);
+            
             await s3.copyObject({
               Bucket: process.env.BUCKET_PROJECT,
               CopySource: origin,
               Key: distKey,
             }).promise();
 
-            console.log(`Copied from ${origin} to ${process.env.BUCKET_PROJECT}/${distKey}`);
+            console.log(`Moved to to ${process.env.BUCKET_PROJECT}/${distKey}`);
 
             await s3.deleteObject({
               Bucket: process.env.BUCKET_PROJECT,
               Key: record.s3.object.key,
             }).promise()
 
-            console.log(`Deleted from ${origin}`)
+            console.log(`Deleted source: ${origin}`)
 
             resolve({ result: 'good'});
           })

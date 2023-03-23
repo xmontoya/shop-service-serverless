@@ -15,7 +15,7 @@ export const importProductsFile = async (event) => {
         }
       });
     }
-    
+
     const params = {
         Bucket: process.env.BUCKET_PROJECT,
         Key: `${process.env.BUCKET_UPLOADED}/${fileName}`,
